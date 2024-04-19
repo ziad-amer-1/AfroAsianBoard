@@ -1,0 +1,19 @@
+pay course -- need token
+
+endpoint after payment -> student and course
+
+
+course [title, numberOfLessons, numberOfHours, overview, whatWhatLearn[], price, tag]
+student [name, email, phoneNumber, password, courses[]]
+
+manager(admin)
+	manage courses [add, update, delete]
+	view all registered students
+
+student
+	register
+	login
+	view courses [search using tag name]
+	buy course
+	
+	
