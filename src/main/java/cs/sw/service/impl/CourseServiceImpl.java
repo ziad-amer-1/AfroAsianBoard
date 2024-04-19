@@ -6,11 +6,9 @@ import cs.sw.repository.CourseRepo;
 import cs.sw.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +21,7 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
+    @PreAuthorize("hasAuthority('MANAGER')")
     public String createNewCourse(CourseRequestDTO courseRequestDTO) {
         Objects.requireNonNull(courseRequestDTO.title());
         Objects.requireNonNull(courseRequestDTO.overview());
@@ -52,6 +51,44 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getAllCourses(String tag) {
         return courseRepo.listAllByTagIfProvided(tag);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public String editCourse(Long courseId, CourseRequestDTO courseRequestDTO) {
+        Course course = getSingleCourse(courseId);
+        if (courseRequestDTO.tag() != null) {
+            course.setTag(courseRequestDTO.tag());
+        }
+        if (courseRequestDTO.title() != null) {
+            course.setTitle(courseRequestDTO.title());
+        }
+        if (courseRequestDTO.overview() != null) {
+            course.setOverview(courseRequestDTO.overview());
+        }
+        if (courseRequestDTO.numberOfLessons() != null) {
+            course.setNumberOfLessons(courseRequestDTO.numberOfLessons());
+        }
+        if (courseRequestDTO.numberOfHours() != null) {
+            course.setNumberOfHours(courseRequestDTO.numberOfHours());
+        }
+        if (courseRequestDTO.price() != null) {
+            course.setPrice(courseRequestDTO.price());
+        }
+        if (courseRequestDTO.whatWillYouLearn() != null) {
+            course.setWhatWillYouLearn(courseRequestDTO.whatWillYouLearn());
+        }
+
+
+        return "course with id = " + courseId + " updated successfully";
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public String deleteCourse(Long courseId) {
+        Course course = getSingleCourse(courseId);
+        courseRepo.delete(course);
+        return "course with id = " + courseId + " deleted successfully";
     }
 
     private boolean isCourseExist(String title) {

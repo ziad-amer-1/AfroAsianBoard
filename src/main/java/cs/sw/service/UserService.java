@@ -12,6 +12,6 @@ public interface UserService {
     AppUser getSingleUser(Long userId);
     void checkUserExistence(String phoneNumber);
     AppUser findByEmail(String Email);
-    String payCourse(Long studentId, Long courseId);
+    String payCourse(Long courseId, String token);
     List<StudentDTO> getAllStudents();
 }

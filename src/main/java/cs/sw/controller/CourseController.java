@@ -23,6 +23,15 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<?> getSingleCourse(@PathVariable Long courseId) {
+        try {
+            return ResponseEntity.ok(courseService.getSingleCourse(courseId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> createNewCourse(@RequestBody CourseRequestDTO courseRequestDTO) {
         try {
@@ -32,5 +41,22 @@ public class CourseController {
         }
     }
 
+    @PutMapping("/{courseId}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long courseId, @RequestBody CourseRequestDTO courseRequestDTO) {
+        try {
+            return ResponseEntity.ok(courseService.editCourse(courseId, courseRequestDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long courseId) {
+        try {
+            return ResponseEntity.ok(courseService.deleteCourse(courseId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 }

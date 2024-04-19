@@ -23,10 +23,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{studentId}/payCourse/{courseId}")
-    public ResponseEntity<String> enroll(@PathVariable(name = "studentId") Long courseId, @PathVariable(name = "courseId") Long studentId) {
+    @PutMapping("/payCourse/{courseId}")
+    public ResponseEntity<String> enroll(@PathVariable(name = "courseId") Long courseId, @RequestHeader("Authorization") String token) {
         try {
-            return ResponseEntity.ok(userService.payCourse(courseId, studentId));
+            return ResponseEntity.ok(userService.payCourse(courseId, token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

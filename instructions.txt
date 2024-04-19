@@ -15,5 +15,11 @@ student
 	login
 	view courses [search using tag name]
 	buy course
-	
+
+services
+    register
+    login
+    manage courses [add, update, delete] (for the manager only)
+    view courses
+    buy course (need registered student)
 	

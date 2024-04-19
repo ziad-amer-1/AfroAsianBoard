@@ -10,14 +10,18 @@ import cs.sw.mapper.UserMapper;
 import cs.sw.repository.UserRepo;
 import cs.sw.service.CourseService;
 import cs.sw.service.UserService;
+import cs.sw.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static cs.sw.utils.SecurityConstant.TOKEN_PREFIX;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final CourseService courseService;
+    private final JwtUtils jwtUtils;
 
     @Override
     public AppUser createUser(RegisterDTO registerDTO) {
@@ -61,7 +66,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String payCourse(Long studentId, Long courseId) {
+    public String payCourse(Long courseId, String token) {
+        Long studentId = extractUserIdFromToken(token).longValue();
         AppUser student = getSingleUser(studentId);
         Course course = courseService.getSingleCourse(courseId);
 
@@ -72,7 +78,14 @@ public class UserServiceImpl implements UserService {
         return "Student [" + student.getName() + "] pay course [" + course.getTitle() + "]";
     }
 
+    private Integer extractUserIdFromToken(String token) {
+        token = token.split(TOKEN_PREFIX)[1];
+        log.info("userId: {}", jwtUtils.extractClaims(token).get("user_id"));
+        return (int) jwtUtils.extractClaims(token).get("user_id");
+    }
+
     @Override
+    @PreAuthorize("hasAuthority('MANAGER')")
     public List<StudentDTO> getAllStudents() {
         return UserMapper.fromUserToStudentDTO(userRepo.getAllStudents());
     }

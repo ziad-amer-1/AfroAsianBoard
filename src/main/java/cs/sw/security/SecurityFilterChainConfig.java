@@ -29,10 +29,12 @@ public class SecurityFilterChainConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST,  "/api/v1/auth/login")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/register")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/course/**")
                         .permitAll()
                         .anyRequest()
-                        .permitAll()
+                        .authenticated()
                 ).sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(config -> config.authenticationEntryPoint(authenticationEntryPoint))
                 .authenticationProvider(authenticationProvider)
