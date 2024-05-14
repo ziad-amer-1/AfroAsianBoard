@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,18 +34,18 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewCourse(@RequestBody CourseRequestDTO courseRequestDTO) {
+    public ResponseEntity<?> createNewCourse(@ModelAttribute CourseRequestDTO courseRequestDTO, @RequestParam("image") MultipartFile image) {
         try {
-            return ResponseEntity.ok(courseService.createNewCourse(courseRequestDTO));
+            return ResponseEntity.ok(courseService.createNewCourse(courseRequestDTO, image));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PutMapping("/{courseId}")
-    public ResponseEntity<?> updateCourse(@PathVariable Long courseId, @RequestBody CourseRequestDTO courseRequestDTO) {
+    public ResponseEntity<?> updateCourse(@PathVariable Long courseId, @ModelAttribute CourseRequestDTO courseRequestDTO, @RequestParam(value = "image", required = false) MultipartFile image) {
         try {
-            return ResponseEntity.ok(courseService.editCourse(courseId, courseRequestDTO));
+            return ResponseEntity.ok(courseService.editCourse(courseId, courseRequestDTO, image));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

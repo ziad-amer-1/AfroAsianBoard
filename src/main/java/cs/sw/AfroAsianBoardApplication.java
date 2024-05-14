@@ -28,26 +28,27 @@ public class AfroAsianBoardApplication {
 	@Bean
 	CommandLineRunner commandLineRunner() {
 		return args -> {
-			AppUser manager = AppUser
-					.builder()
-					.name("manager")
-					.phoneNumber("0111")
-					.email("manager@gmail.com")
-					.password(passwordEncoder.encode("123"))
-					.role(Role.MANAGER)
-					.build();
+//			AppUser manager = AppUser
+//					.builder()
+//					.name("manager")
+//					.phoneNumber("0111")
+//					.email("manager@gmail.com")
+//					.password(passwordEncoder.encode("123"))
+//					.role(Role.MANAGER)
+//					.build();
+//
+//			AppUser student = AppUser
+//					.builder()
+//					.name("student")
+//					.phoneNumber("0222")
+//					.email("student@gmail.com")
+//					.password(passwordEncoder.encode("123"))
+//					.role(Role.STUDENT)
+//					.build();
 
-			AppUser student = AppUser
-					.builder()
-					.name("student")
-					.phoneNumber("0222")
-					.email("student@gmail.com")
-					.password(passwordEncoder.encode("123"))
-					.role(Role.STUDENT)
-					.build();
+//			userRepo.save(manager);
+//			userRepo.save(student);
 
-			userRepo.save(manager);
-			userRepo.save(student);
 		};
 	}
 

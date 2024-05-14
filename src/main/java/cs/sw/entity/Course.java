@@ -32,8 +32,9 @@ public class Course {
     private List<String> whatWillYouLearn;
     private Float price;
     private String tag;
+    private String imagePath;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<AppUser> students;
 

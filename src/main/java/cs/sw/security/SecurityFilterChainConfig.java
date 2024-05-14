@@ -33,6 +33,8 @@ public class SecurityFilterChainConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/course/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/coursesImages/**")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 ).sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
